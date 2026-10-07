@@ -1,0 +1,29 @@
+name: 🧪 Mojule CI 検証
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    name: ✅ 型検査・テスト・Build
+    runs-on: ubuntu-latest
+    steps:
+      - name: 📥 ソース取得
+        uses: actions/checkout@v4
+      - name: 🟢 Node.js セットアップ
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+      - name: 📦 pnpm セットアップ
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10.18.0
+      - name: 📦 依存関係
+        run: pnpm install --frozen-lockfile
+      - name: 🔎 型検査
+        run: pnpm verify
